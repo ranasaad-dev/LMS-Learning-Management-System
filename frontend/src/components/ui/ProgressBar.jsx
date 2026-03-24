@@ -8,7 +8,7 @@ function ProgressBar({ progress = 0 }) {
   return (
     <div className="progress-wrapper">
       <div className="progress-header">
-        <p className="progress-label">Course Progress</p>
+        <label>Course Progress</label>
 
         <div className="progress-percentage">
           {safeProgress === 100 && <FaCheckCircle className="complete-icon" />}

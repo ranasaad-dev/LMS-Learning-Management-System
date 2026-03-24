@@ -30,14 +30,6 @@
   position: relative;
 }
 
-.register-form label {
-  display: block;
-  font-family: var(--body-font, "Inter", sans-serif);
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: #000000;
-}
-
 .register-form input {
   width: 100%;
   padding: 12px 15px;

@@ -20,6 +20,8 @@ import UpdateCourse from "./pages/roles/instructor/edit-course/UpdateCourse";
 import ManageUsers from "./pages/roles/admin/manage-user/ManageUsers";
 import ManageCourses from "./pages/roles/admin/manage-course/ManageCourse";
 import Notification from "./pages/public/notification/Notification";
+import ReviewList from "./components/review/ReviewList";
+import ViewStudents from "./pages/roles/instructor/view-students/ViewStudents";
 
 function App() {
   return (
@@ -28,25 +30,31 @@ function App() {
       <MainLayout>
 
         <Routes>
-
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/courses" element={<CourseList />} />
           <Route path="/courses/:id" element={<CourseDetail />} />
           <Route path="/about" element={<About />} />
+          {/* Protected Routes */}
           <Route path="/dashboard/:id" element={<Dashboard />} />
+          <Route path="/NoticeBoard" element={<Notification />} />
+          {/* Student Paths */}
           <Route path="/my-courses" element={<ProtectedRoute> <MyCourses /> </ProtectedRoute>} />
-          <Route path="/profile" element={<ProtectedRoute> <StudentProfile /> </ProtectedRoute> } />
-          <Route path="/edit-profile" element={<ProtectedRoute> <EditStudentProfile /> </ProtectedRoute> } />
-          <Route path="/learn/:courseId" element={<ProtectedRoute> <Learn /> </ProtectedRoute> } />
+          <Route path="/profile" element={<ProtectedRoute> <StudentProfile /> </ProtectedRoute>} />
+          <Route path="/edit-profile" element={<ProtectedRoute> <EditStudentProfile /> </ProtectedRoute>} />
+          <Route path="/learn/:courseId" element={<ProtectedRoute> <Learn /> </ProtectedRoute>} />
+          {/* Instructor Paths */}
           <Route path="/create-course" element={<ProtectedRoute> <CreateCourse /> </ProtectedRoute>} />
           <Route path="/manage-course/:id" element={<ProtectedRoute> <CourseManage /> </ProtectedRoute>} />
           <Route path="/course/:id/add-lesson" element={<ProtectedRoute> <AddLesson /> </ProtectedRoute>} />
           <Route path="/course/:id/edit" element={<ProtectedRoute> <UpdateCourse /> </ProtectedRoute>} />
+          <Route path="/course/:courseId/reviews" element={<ProtectedRoute> <ReviewList /> </ProtectedRoute>} />
+        <Route path="/course/:id/students" element={<ProtectedRoute> <ViewStudents /> </ProtectedRoute>} />
+          {/* Admin Paths */}
           <Route path="/dashboard/:id/users" element={<ProtectedRoute> <ManageUsers /> </ProtectedRoute>} />
           <Route path="/dashboard/:id/courses" element={<ProtectedRoute> <ManageCourses /> </ProtectedRoute>} />
-          <Route path="/NoticeBoard" element={<Notification />} />
         </Routes>
 
       </MainLayout>

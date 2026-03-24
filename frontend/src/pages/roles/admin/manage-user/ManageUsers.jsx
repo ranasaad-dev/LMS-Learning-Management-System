@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FaTrash, FaUserEdit, FaSearch, FaPlus } from "react-icons/fa";
 import adminService from "../../../../services/adminService";
 import { Link, useParams } from "react-router-dom";
+import Label from "/src/components/ui/label/Label";
 import "./ManageUsers.css";
 
 function ManageUsers() {
@@ -178,7 +179,7 @@ function ManageUsers() {
             <h3>Add New User</h3>
             <form className="add-user-form" onSubmit={handleAddUser}>
               <div className="form-group">
-                <label>Name</label>
+                <Label>Name</Label>
                 <input
                   type="text"
                   value={newUser.name}
@@ -187,7 +188,7 @@ function ManageUsers() {
                 />
               </div>
               <div className="form-group">
-                <label>Email</label>
+                <Label>Email</Label>
                 <input
                   type="email"
                   value={newUser.email}
@@ -196,7 +197,7 @@ function ManageUsers() {
                 />
               </div>
               <div className="form-group">
-                <label>Password</label>
+                <Label>Password</Label>
                 <input
                   type="password"
                   value={newUser.password}
@@ -205,7 +206,7 @@ function ManageUsers() {
                 />
               </div>
               <div className="form-group">
-                <label>Role</label>
+                <Label>Role</Label>
                 <select
                   value={newUser.role}
                   class="role-badge role-select"

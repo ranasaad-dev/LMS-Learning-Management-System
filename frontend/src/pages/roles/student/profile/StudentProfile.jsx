@@ -12,13 +12,17 @@ function StudentProfile() {
 
     <div className="profile-container">
       <h2 className="profile-title">Student Profile</h2>
-      <div className="profile-card">
-
-        <h4>{"Name: " + user.name}</h4>
-        <h4>{"Email: " + user.email}</h4>
-
+      <div class="profile-card">
+        <div class="profile-row">
+          <span class="label">Name:</span>
+          <span class="value">{user.name}</span>
+        </div>
+        <div class="profile-row">
+          <span class="label">Email:</span>
+          <span class="value">{user.email}</span>
+        </div>
       </div>
-        <Link to="/edit-profile" className="profile-btn">Update Profile</Link>
+      <Link to="/edit-profile" className="profile-btn">Update Profile</Link>
 
     </div>
 

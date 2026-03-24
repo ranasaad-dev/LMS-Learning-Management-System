@@ -14,12 +14,6 @@
     margin-bottom: 8px;
   }
   
-  .progress-label {
-    color: var(--full-light);
-    font-size: 14px;
-    font-weight: 500;
-  }
-  
   .progress-percentage {
     display: flex;
     align-items: center;

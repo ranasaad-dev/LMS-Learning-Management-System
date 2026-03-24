@@ -10,7 +10,20 @@ const createReview = async (courseId, review) => {
   return response.data;
 };
 
+const updateReview = async (id, data) => {
+  const response = await apiClient.put(`/reviews/${id}`, data);
+  return response.data;
+};
+
+const deleteReview = async (id, review) => {
+  const response = await apiClient.delete(`/reviews/${id}`);
+  return response.data;
+};
+
+
 export default {
   getCourseReviews,
   createReview,
+  updateReview,
+  deleteReview
 };

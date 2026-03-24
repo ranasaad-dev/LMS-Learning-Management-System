@@ -82,12 +82,6 @@
     margin-bottom: 1rem;
   }
   
-  .course-form label {
-    display: block;
-    margin-bottom: 0.3rem;
-  }
-  
-  .course-form input,
   .course-form textarea {
     width: 100%;
     padding: 0.5rem;

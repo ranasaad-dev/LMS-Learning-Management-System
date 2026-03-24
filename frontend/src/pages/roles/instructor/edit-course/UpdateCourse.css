@@ -32,12 +32,7 @@
     flex-direction:column;
     gap:6px;
     }
-    
-    .form-group label{
-    color: var(--full-dark);
-    font-size:14px;
-    }
-    
+   
     .form-group textarea{
     background:var(--full-dark);
     border:none;

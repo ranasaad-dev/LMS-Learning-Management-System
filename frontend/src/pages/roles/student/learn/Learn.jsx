@@ -69,7 +69,7 @@ function Learn() {
           <LessonPlayer lesson={currentLesson} />
         </div>
 
-        <ReviewList sr={setReviews} r={reviews} />
+        <ReviewList r={reviews}/>
       </div>
 
       <ReviewForm update={setReviews} />

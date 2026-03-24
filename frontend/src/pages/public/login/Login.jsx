@@ -4,6 +4,7 @@ import { useAuth } from "/src/context/AuthContext";
 import Loading from "/src/components/ui/Loading"
 import notify from "../../../components/ui/notify/Notify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Label from "/src/components/ui/label/Label";
 import "./Login.css";
 
 const Login = () => {
@@ -43,11 +44,12 @@ const [isHidden, setIsHidden] = useState(true);
         <h3 className="login-title">Login</h3>
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email</label>
+            <Label>Email</Label>
+        
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="Enter your email" />
           </div>
           <div className="form-group">
-            <label>Password</label>
+            <Label>Password</Label>
 
             <input type={isHidden?"password":"text"} value={password} minLength={8} onChange={(e) => setPassword(e.target.value)} required placeholder="Enter your password" />
          

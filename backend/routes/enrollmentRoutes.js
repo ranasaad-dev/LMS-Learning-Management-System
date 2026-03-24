@@ -6,7 +6,8 @@ const {
   enrollCourse,
   getMyCourses,
   updateProgress,
-  unenrollCourse
+  unenrollCourse,
+  getStudents
 } = require("../controllers/enrollmentController");
 
 // Enroll in a course
@@ -21,4 +22,6 @@ router.put("/:courseId/progress", protect, updateProgress);
 // Unenroll from a course
 router.delete("/:courseId", protect, unenrollCourse);
 
+// Get enrolled students of a course
+router.get("/course/:id/students", protect, getStudents);
 module.exports = router;

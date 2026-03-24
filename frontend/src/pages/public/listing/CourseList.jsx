@@ -51,7 +51,7 @@ const CourseList = () => {
                 <FaUserGraduate /> {course.instructor.name}
               </span>
               <span className="course-price">
-                <FaDollarSign /> {course.price.toFixed(2)}
+                <FaDollarSign /> {course.price}
               </span>
             </div>
           </div>

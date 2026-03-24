@@ -3,6 +3,7 @@ import { useAuth } from "../../../../context/AuthContext";
 import apiClient from "../../../../services/apiClient"; // Axios instance
 import notify from "../../../../components/ui/notify/Notify";
 import authService from "../../../../services/authService";
+import Label from "/src/components/ui/label/Label";
 import "./EditStudentProfile.css";
 
 function EditStudentProfile() {
@@ -57,23 +58,23 @@ function EditStudentProfile() {
       <div className="profile-card">
         <form onSubmit={handleSubmit} className="profile-form">
           <div className="profile-group">
-            <label>Name</label>
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" />
+            <Label>Name</Label>
+            <input className="inputComponent" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" />
           </div>
 
           <div className="profile-group">
-            <label>Email</label>
-            <input type="email" value={user.email} disabled />
+            <Label>Email</Label>
+            <input className="inputComponent" type="email" value={user.email} disabled />
           </div>
 
           <div className="profile-group">
-            <label>Current Password</label>
-            <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} placeholder="Required if changing password" />
+            <Label>Current Password</Label>
+            <input className="inputComponent" type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} placeholder="Required if changing password" />
           </div>
 
           <div className="profile-group">
-            <label>New Password</label>
-            <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="Leave empty if not changing" />
+            <Label>New Password</Label>
+            <input className="inputComponent" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="Leave empty if not changing" />
           </div>
 
           <button type="submit" className="profile-btn" disabled={loading}>

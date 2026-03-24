@@ -46,7 +46,7 @@ exports.getCourseReviews = async (req, res) => {
   try {
 
     const reviews = await Review.find({ course: req.params.courseId })
-      .populate("student", "name");
+      .populate("student", "name").sort({ createdAt: -1 });
 
     res.json(reviews);
 

@@ -20,9 +20,14 @@ const courseProgress = async (courseId, progress) => {
   return response.data;
 };
 
+const getCourseStudents = async (courseId) => {
+  const response = await apiClient.get(`/enroll/course/${courseId}/students`);
+return response.data;
+}
 
 export default {
   enrollInCourse,
   getMyCourses,
-unenrollInCourse
+unenrollInCourse,
+getCourseStudents
 };

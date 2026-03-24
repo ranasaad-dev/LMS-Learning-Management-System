@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import reviewService from "../../services/reviewService.js";
+import Label from "/src/components/ui/label/Label";
 
 function ReviewForm({ update }) {
-
+  
+  const { courseId } = useParams();
   const [review, setReview] = useState({
     rating: 5,
     comment: ""
@@ -22,6 +25,7 @@ function ReviewForm({ update }) {
   
     } catch (err) {
       alert("Already Submited Review.");
+   
     }
   };
 
@@ -30,7 +34,7 @@ function ReviewForm({ update }) {
       <h3 className="review-title">Course Reviews</h3>
       <div className="review-form">
         <div className="rating-select">
-          <label>Rating</label>
+          <Label>Rating</Label>
           <select value={review.rating} onChange={(e) => setReview({ ...review, rating: Number(e.target.value) })} >
             <option value={5}>5 ⭐</option>
             <option value={4}>4 ⭐</option>

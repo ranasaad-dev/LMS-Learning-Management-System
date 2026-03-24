@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FaPlusCircle, FaTrash, FaPlayCircle } from "react-icons/fa";
-
+import Label from "/src/components/ui/label/Label";
 import lessonService from "../../../../services/lessonService";
 
 import "./AddLesson.css";
@@ -79,7 +79,7 @@ function AddLesson() {
         {error && <p className="form-error">{error}</p>}
 
         <div className="form-group">
-          <label>Lesson Title</label>
+          <Label>Lesson Title</Label>
           <input
             type="text"
             placeholder="Intro to React"
@@ -89,7 +89,7 @@ function AddLesson() {
         </div>
 
         <div className="form-group">
-          <label>Video URL</label>
+          <Label>Video URL</Label>
           <input
             type="text"
             placeholder="https://video.com/react-intro"

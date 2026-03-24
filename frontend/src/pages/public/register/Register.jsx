@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "/src/context/AuthContext";
 import notify from "../../../components/ui/notify/Notify";
 import { FaEye, FaEyeSlash } from "react-icons/fa"
+import Label from "/src/components/ui/label/Label";
 import './Register.css';
 
 function Register() {
@@ -45,24 +46,24 @@ function Register() {
         <form className="register-form" onSubmit={handleSubmit}>
 
           <div className="form-group">
-            <label>Name</label>
+            <Label>Name</Label>
             <input value={name} onChange={(e) => setName(e.target.value)} required />
           </div>
 
           <div className="form-group">
-            <label>Email</label>
+            <Label>Email</Label>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </div>
 
           <div className="form-group">
-            <label>Password</label>
+            <Label>Password</Label>
             <input type={isHidden?"password":"text"} minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} required />
           {isHidden ? <FaEyeSlash onClick={() => setIsHidden(!isHidden)} className="eye-icon-password" /> : <FaEye onClick={() => setIsHidden(!isHidden)} className="eye-icon-password" />}
           </div>
 
 
           <div className="form-group">
-            <label>Confirm Password</label>
+            <Label>Confirm Password</Label>
             <input type={isCPHidden?"password":"text"} minLength={8} value={confimPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
           {isCPHidden ? <FaEyeSlash onClick={() => setIsCPHidden(!isCPHidden)} className="eye-icon-confirm" /> : <FaEye onClick={() => setIsCPHidden(!isCPHidden)} className="eye-icon-confirm" />}
           </div>

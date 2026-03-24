@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import courseService from "../../../../services/courseService";
+import Label from "/src/components/ui/label/Label";
 import "./ManageCourse.css";
 
 function ManageCourses({ adminId }) {
@@ -168,7 +169,7 @@ function ManageCourses({ adminId }) {
             <h3>{editingCourse ? "Edit Course" : "Create Course"}</h3>
             <form onSubmit={handleSubmit} className="course-form">
               <div className="form-group">
-                <label>Title</label>
+                <Label>Title</Label>
                 <input
                   type="text"
                   value={formData.title}
@@ -178,7 +179,7 @@ function ManageCourses({ adminId }) {
               </div>
 
               <div className="form-group">
-                <label>Description</label>
+                <Label>Description</Label>
                 <textarea
                   value={formData.description}
                   onChange={(e) =>
@@ -189,7 +190,7 @@ function ManageCourses({ adminId }) {
               </div>
 
               <div className="form-group">
-                <label>Price ($)</label>
+                <Label>Price ($)</Label>
                 <input
                   type="number"
                   value={formData.price}
@@ -199,7 +200,7 @@ function ManageCourses({ adminId }) {
               </div>
 
               <div className="form-group">
-                <label>Category</label>
+                <Label>Category</Label>
                 <input
                   type="text"
                   value={formData.category}
@@ -209,7 +210,7 @@ function ManageCourses({ adminId }) {
               </div>
 
               <div className="form-group">
-                <label>Thumbnail URL</label>
+                <Label>Thumbnail URL</Label>
                 <input
                   type="text"
                   value={formData.thumbnail}

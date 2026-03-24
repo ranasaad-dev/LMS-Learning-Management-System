@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { FaSave } from "react-icons/fa";
 import courseService from "../../../../services/courseService";
 import Input from "../../../../components/ui/input/Input";
+import Label from "/src/components/ui/label/Label";
 import "./UpdateCourse.css";
 
 function UpdateCourse() {
@@ -61,9 +62,9 @@ function UpdateCourse() {
                 {error && <div className="update-course-error">{error}</div>}
                 {success && <div className="update-course-success">{success}</div>}
                 <form className="update-course-form" onSubmit={handleSubmit}>
-                    <div className="form-group"><label>Title</label><Input p="Title" t="text" required n="title" v={course.title} o={handleChange} /></div>
-                    <div className="form-group"><label>Description</label><textarea required name="description" value={course.description} onChange={handleChange}></textarea></div>
-                    <div className="form-group"><label>Price</label><Input p="Price" t="number" required n="price" v={course.price} o={handleChange} /></div>
+                    <div className="form-group"><Label>Title</Label><Input p="Title" t="text" required n="title" v={course.title} o={handleChange} /></div>
+                    <div className="form-group"><Label>Description</Label><textarea required name="description" value={course.description} onChange={handleChange}></textarea></div>
+                    <div className="form-group"><Label>Price</Label><Input p="Price" t="number" required n="price" v={course.price} o={handleChange} /></div>
                     <button className="update-course-btn" disabled={updating}><FaSave /> {updating ? "Updating..." : "Update Course"}</button>
                 </form>
             </div>
