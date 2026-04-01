@@ -4,5 +4,7 @@ label{
     font-weight: 600;
     margin-bottom: 8px;
     font-size: 14px;
-    color: #ffffff;
+}
+.label-light{
+    color: var(--full-light);
 }

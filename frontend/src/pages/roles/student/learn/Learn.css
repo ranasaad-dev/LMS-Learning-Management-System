@@ -1,194 +1,192 @@
+/* =========================
+   ROOT LAYOUT
+========================= */
+
 .course-player {
-    display: grid;
-    grid-template-columns: 300px 1fr;
-    min-height: 90vh;
-    background: var(--full-dark);
-    color: var(--full-light);
-  }
-  
-  /* Sidebar */
-  
-  .lesson-sidebar {
-    background: var(--less-dark);
-    padding: 20px;
-    border-right: 1px solid rgba(255,255,255,0.05);
-  }
-  
-  .sidebar-title {
-    font-family: var(--heading-font);
-    margin-bottom: 20px;
-  }
-  
-  .lesson-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .lesson-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  
-    padding: 12px 14px;
-  
-    background: rgba(255,255,255,0.03);
-  
-    border-radius: 6px;
-  
-    cursor: pointer;
-  
-    transition: all 0.2s ease;
-  }
-  
-  .lesson-item:hover {
-    background: rgba(255,255,255,0.08);
-  }
-  
-  .lesson-item.active {
-    background: var(--less-light);
-    color: var(--full-dark);
-    font-weight: 500;
-  }
-  
-  .lesson-icon {
-    font-size: 18px;
-  }
-  
-  .lesson-title {
-    font-family: var(--body-font);
-  }
-  
-  /* Content */
-  
-  .lesson-content {
-    padding: 30px;
-  }
-  
-  .video-wrapper {
-    margin-top: 20px;
-    background: black;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  /* Loading */
-  
-  .course-player-loading,
-  .course-player-error {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  
-    height: 80vh;
-  
-    font-family: var(--heading-font);
-    font-size: 20px;
-  
-    background: var(--full-dark);
-    color: var(--full-light);
-  }
-  .review-section{
-    margin-top:40px;
-    padding:25px;
-    background:var(--less-dark);
-    border-radius:10px;
-  }
-  
-  .review-title{
-    font-size:22px;
-    margin-bottom:20px;
-    color:var(--full-light);
-  }
-  
-  .review-form{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-    margin-bottom:25px;
-  }
-  
-  .rating-select{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-    color:var(--full-light);
-  }
-  
-  .rating-select select{
-    padding:8px;
-    border-radius:6px;
-    border:none;
-    background:var(--full-dark);
-    color:var(--full-light);
-  }
-  
-  .review-input{
-    resize:none;
-    min-height:90px;
-    padding:12px;
-    border-radius:8px;
-    border:none;
-    background:var(--full-dark);
-    color:var(--full-light);
-  }
-  
-  .review-submit{
-    align-self:flex-end;
-    padding:10px 18px;
-    border:none;
-    border-radius:6px;
-    background:var(--less-light);
-    color:var(--full-dark);
-    cursor:pointer;
-    font-weight:600;
-  }
-  
-  .review-submit:hover{
-    background:var(--full-light);
-  }
-  
-  .review-list{
-    display:flex;
-    flex-direction:column;
-    gap:14px;
-  }
-  
-  .review-card{
-    padding:15px;
-    background:var(--full-dark);
-    border-radius:8px;
-  }
-  
-  .review-header{
-    display:flex;
-    justify-content:space-between;
-    margin-bottom:6px;
-  }
-  
-  .review-user{
-    font-weight:600;
-    color:var(--full-light);
-  }
-  
-  .review-rating{
-    color:gold;
-  }
-  
-  .review-comment{
-    color:var(--less-light);
-  }
-  /* Responsive */
-  
-  @media (max-width: 900px) {
-  
-    .course-player {
-      grid-template-columns: 1fr;
-    }
-  
-    .lesson-sidebar {
-      border-right: none;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-  
-  }
+  display: flex;
+  height: 100vh;
+  background: var(--full-dark);
+  color: var(--full-light);
+  font-family: var(--body-font);
+  overflow: hidden;
+}
+
+/* =========================
+   LEFT SIDEBAR
+========================= */
+
+.lesson-sidebar {
+  width: 22%;
+  min-width: 260px;
+  height: 100vh;
+  background: var(--less-dark);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  overflow-y: auto;
+}
+
+/* Lessons section inside sidebar */
+.lesson-list {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+}
+
+/* Review form stays at bottom */
+.review-form {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* =========================
+   RIGHT SIDEBAR (MAIN CONTENT)
+========================= */
+
+.right-sidebar {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 2rem;
+  gap: 1rem;
+  overflow-y: auto;
+}
+
+/* =========================
+   PROGRESS DIV (TOP)
+========================= */
+
+.progress-wrapper {
+  width: 100%;
+  background: var(--less-dark);
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+/* =========================
+   NEXT BUTTON DIV (FLOATING OVER TOP AREA)
+========================= */
+
+.next-btn-div {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -10px;
+  z-index: 5;
+  position: relative;
+}
+
+.next-btn {
+  background: var(--full-light);
+  color: var(--full-dark);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.25s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.next-btn:hover {
+  transform: translateY(-2px);
+}
+
+.next-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* =========================
+   VIDEO PLAYER
+========================= */
+
+.video-wrapper {
+  width: 100%;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+#yt-player,
+.video-container {
+  width: 100%;
+  height: 480px;
+}
+
+/* =========================
+   REVIEWS SECTION
+========================= */
+
+.reviews-section {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.review-item {
+  background: var(--less-dark);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+/* =========================
+   LESSON ITEMS
+========================= */
+
+.lesson-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.25s ease;
+  color: var(--less-light);
+}
+
+.lesson-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--full-light);
+}
+
+.lesson-item.active {
+  background: var(--full-light);
+  color: var(--full-dark);
+}
+
+.lesson-item.locked {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.lesson-icon.lock {
+  color: #999;
+}
+
+/* =========================
+   SCROLLBARS
+========================= */
+
+.lesson-sidebar::-webkit-scrollbar,
+.right-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.lesson-sidebar::-webkit-scrollbar-thumb,
+.right-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}

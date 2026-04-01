@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const lessonSchema = new mongoose.Schema({
 
   title: {
@@ -18,16 +17,13 @@ const lessonSchema = new mongoose.Schema({
     required: true
   },
 
-  content: {
-    type: String
-  },
-
-  order: {
+  duration: {
     type: Number,
-    required: true
-  }
-
-}, {
+    required: true,
+    default: 0
+  },
+}, 
+{
   timestamps: true
 });
 

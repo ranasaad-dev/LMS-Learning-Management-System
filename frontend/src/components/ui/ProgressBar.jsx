@@ -2,7 +2,7 @@ import React from "react";
 import "./ProgressBar.css";
 import { FaCheckCircle } from "react-icons/fa";
 
-function ProgressBar({ progress = 0 }) {
+function ProgressBar({ progress }) {
   const safeProgress = Math.min(Math.max(progress, 0), 100);
 
   return (

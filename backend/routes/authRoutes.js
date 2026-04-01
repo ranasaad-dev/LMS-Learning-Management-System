@@ -8,9 +8,9 @@ router.post("/register", authController.register);
 
 router.post("/login", authController.login);
 
-router.get("/profile", protect, authController.getProfile);
+router.get("/profile", protect(["instructor", "admin","student"])  , authController.getProfile);
 
-router.put("/profile/:id", protect, authController.updateUser);
+router.put("/profile/:id", protect(["instructor", "admin","student"]) , authController.updateUser);
 
 
 module.exports = router;

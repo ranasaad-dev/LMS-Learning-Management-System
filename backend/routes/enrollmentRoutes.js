@@ -11,17 +11,17 @@ const {
 } = require("../controllers/enrollmentController");
 
 // Enroll in a course
-router.post("/:courseId", protect, enrollCourse);
+router.post("/:id", protect(["student"])  , enrollCourse);
 
 // Get all enrolled courses of logged-in user
-router.get("/my-courses", protect, getMyCourses);
+router.get("/", protect(["student"]) , getMyCourses);
 
 // Update course progress
-router.put("/:courseId/progress", protect, updateProgress);
+router.put("/:id", protect(["student"]) , updateProgress);
 
 // Unenroll from a course
-router.delete("/:courseId", protect, unenrollCourse);
+router.delete("/:id", protect(["student"]) , unenrollCourse);
 
 // Get enrolled students of a course
-router.get("/course/:id/students", protect, getStudents);
+router.get("/:id/students", protect(["instructor"]) , getStudents);
 module.exports = router;

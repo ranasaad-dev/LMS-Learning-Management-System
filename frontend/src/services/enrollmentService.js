@@ -29,5 +29,6 @@ export default {
   enrollInCourse,
   getMyCourses,
 unenrollInCourse,
-getCourseStudents
+getCourseStudents,
+courseProgress,
 };

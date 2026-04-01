@@ -3,12 +3,13 @@ import { useParams } from "react-router-dom";
 import { FaPlusCircle, FaTrash, FaPlayCircle } from "react-icons/fa";
 import Label from "/src/components/ui/label/Label";
 import lessonService from "../../../../services/lessonService";
+import { useAuth } from "/src/context/AuthContext";
 
 import "./AddLesson.css";
 
 function AddLesson() {
   const { id: courseId } = useParams();
-
+  const {user} = useAuth();
   const [lessons, setLessons] = useState([]);
   const [title, setTitle] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
@@ -43,7 +44,8 @@ function AddLesson() {
       const newLesson = await lessonService.addLesson({
         title,
         videoUrl,
-        course: courseId
+        course: courseId,
+        user: user
       });
       setLessons([...lessons, newLesson]);
       setTitle("");

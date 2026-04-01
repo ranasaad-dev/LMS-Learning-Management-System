@@ -39,12 +39,11 @@ const courseSchema = new mongoose.Schema({
     }
   ],
 
-  rating: {
+  studentsEnrolled: {
     type: Number,
     default: 0
   },
-
-  studentsEnrolled: {
+  totalDuration: {
     type: Number,
     default: 0
   }

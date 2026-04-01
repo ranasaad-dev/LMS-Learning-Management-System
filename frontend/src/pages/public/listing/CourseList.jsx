@@ -34,7 +34,7 @@ const CourseList = () => {
 
   return (
     <div className="course-list-container">
-      {courses.map((course) => (
+      {courses.length != 0 ?courses.map((course) => (
         <Link
           to={`/courses/${course._id}`}
           className="course-card"
@@ -56,7 +56,7 @@ const CourseList = () => {
             </div>
           </div>
         </Link>
-      ))}
+      )):<h1 style={{"color":"#fff", "margin":"auto"}}>Coming Soon...</h1>}
     </div>
   );
 };

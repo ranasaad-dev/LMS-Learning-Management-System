@@ -1,79 +1,80 @@
 const Lesson = require("../models/lessonModel");
 const Course = require("../models/courseModel");
-
+const mongoose = require("mongoose");
 
 // CREATE LESSON (Instructor only)
 exports.createLesson = async (req, res) => {
   try {
-    const { title, videoUrl, content, order, course, courseId } = req.body;
-
-    // Accept either courseId or course from frontend
-    const courseIdToUse = courseId || course;
+    const { title, videoUrl, duration, course} = req.body;
+    if (!mongoose.Types.ObjectId.isValid(course)) {
+      return res.status(400).json({ message: "Invalid course ID" });
+    }
 
     // Verify course exists
-    const foundCourse = await Course.findById(courseIdToUse);
-
+    const foundCourse = await Course.findById(course);
     if (!foundCourse) {
       return res.status(404).json({ message: "Course not found" });
     }
 
-    // Only instructor who created the course can add lessons
-    if (foundCourse.instructor.toString() !== req.user.id) {
-      return res.status(403).json({ message: "Not authorized" });
+    if (course.instructor.toString() !== req.user.id) {
+      const error = new Error("Not your course !");
+      error.statusCode = 403;
+      throw error;
     }
+
+    // Safe numeric duration
+    const lessonDuration = Number(duration) || 0;
 
     // Create lesson
     const lesson = await Lesson.create({
       title,
       videoUrl,
-      content: content || "",
-      order: order || 0,
-      course: courseIdToUse
+      duration: lessonDuration,
+      course: course,
+     
     });
 
-    // Push lesson ID into course.lessons array
+    // Update course
     foundCourse.lessons.push(lesson._id);
+    foundCourse.totalDuration += lessonDuration;
     await foundCourse.save();
 
     res.status(201).json(lesson);
 
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: error.message });
+    res.status(error.statusCode || 500).json({ message: error.message });
   }
 };
-
-
 
 // GET LESSONS BY COURSE
 exports.getLessonsByCourse = async (req, res) => {
   try {
-
     const lessons = await Lesson.find({ course: req.params.courseId })
-      .sort({ order: 1 });
-
+      .sort({ createdAt: 1 });
     res.json(lessons);
-
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-
-
 // UPDATE LESSON
 exports.updateLesson = async (req, res) => {
   try {
-
     const lesson = await Lesson.findById(req.params.id).populate("course");
-
-    if (!lesson) {
-      return res.status(404).json({ message: "Lesson not found" });
-    }
-
-    // Only instructor who owns the course can update
+    if (!lesson) return res.status(404).json({ message: "Lesson not found" });
+    // Authorization
     if (lesson.course.instructor.toString() !== req.user.id) {
-      return res.status(403).json({ message: "Not authorized" });
+      const error = new Error("Not your course !");
+      error.statusCode = 403;
+      throw error;
+    }
+    // Safe duration handling
+    if (req.body.duration !== undefined) {
+      req.body.duration = Number(req.body.duration) || 0;
+      // Update course totalDuration
+      lesson.course.totalDuration = lesson.course.totalDuration - lesson.duration + req.body.duration;
+      await lesson.course.save();
     }
 
     const updatedLesson = await Lesson.findByIdAndUpdate(
@@ -85,31 +86,35 @@ exports.updateLesson = async (req, res) => {
     res.json(updatedLesson);
 
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error);
+    res.status(error.statusCode || 500).json({ message: error.message });
   }
 };
-
-
 
 // DELETE LESSON
 exports.deleteLesson = async (req, res) => {
   try {
-
     const lesson = await Lesson.findById(req.params.id).populate("course");
+    if (!lesson) return res.status(404).json({ message: "Lesson not found" });
 
-    if (!lesson) {
-      return res.status(404).json({ message: "Lesson not found" });
-    }
-
+    // Authorization
     if (lesson.course.instructor.toString() !== req.user.id) {
-      return res.status(403).json({ message: "Not authorized" });
+      const error = new Error("Not authorized");
+      error.statusCode = 403;
+      throw error;
     }
-
     await lesson.deleteOne();
+    // Update course: remove lesson ID and adjust totalDuration
+    lesson.course.lessons.pull(lesson._id);
+    lesson.course.totalDuration -= lesson.duration;
+    await lesson.course.save();
+
+    // Delete lesson
 
     res.json({ message: "Lesson deleted successfully" });
 
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error);
+    res.status(error.statusCode || 500).json({ message: error.message });
   }
 };

@@ -6,19 +6,19 @@ const { protect } = require("../middleware/authMiddleware");
 
 
 // CREATE LESSON (Instructor)
-router.post("/", protect, lessonController.createLesson);
+router.post("/", protect(["instructor"])  , lessonController.createLesson);
 
 
 // GET LESSONS BY COURSE
-router.get("/course/:courseId", lessonController.getLessonsByCourse);
+router.get("/course/:courseId", protect , lessonController.getLessonsByCourse);
 
 
 // UPDATE LESSON
-router.put("/:id", protect, lessonController.updateLesson);
+router.put("/:id", protect(["instructor"])  , lessonController.updateLesson);
 
 
 // DELETE LESSON
-router.delete("/:id", protect, lessonController.deleteLesson);
+router.delete("/:id", protect(["instructor"])  , lessonController.deleteLesson);
 
 
 module.exports = router;

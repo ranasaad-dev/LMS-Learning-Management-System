@@ -1,7 +1,81 @@
 import "./LessonPlayer.css";
 import { FaPlayCircle } from "react-icons/fa";
+import { useEffect, useRef } from "react";
 
-function LessonPlayer({ lesson }) {
+function LessonPlayer({ lesson, onComplete, setProgress }) {
+  const playerRef = useRef(null);
+  const intervalRef = useRef(null);
+
+  useEffect(() => {
+    if (!lesson?.videoUrl) return;
+
+    const getVideoId = (url) => {
+      try {
+        const urlObj = new URL(url);
+        return urlObj.searchParams.get("v");
+      } catch {
+        return null;
+      }
+    };
+
+    const videoId = getVideoId(lesson.videoUrl);
+    if (!videoId) return;
+
+    // Cleanup
+    if (playerRef.current) {
+      playerRef.current.destroy();
+      playerRef.current = null;
+    }
+
+    if (intervalRef.current) clearInterval(intervalRef.current);
+
+    const createPlayer = () => {
+      playerRef.current = new window.YT.Player("yt-player", {
+        videoId,
+        playerVars: {
+          autoplay: 0, // ✅ FIXED
+          modestbranding: 1,
+          rel: 0,
+        },
+        events: {
+          onReady: () => {
+            intervalRef.current = setInterval(() => {
+              if (!playerRef.current) return;
+
+              const current = playerRef.current.getCurrentTime();
+              const duration = playerRef.current.getDuration();
+
+              if (!duration) return;
+
+              const percent = (current / duration) * 100;
+              const cleanPercent = Math.min(100, Math.round(percent));
+
+              setProgress(cleanPercent);
+
+              // ✅ COMPLETE ONLY AT 95%
+              if (percent >= 95) {
+                onComplete();
+                clearInterval(intervalRef.current);
+              }
+            }, 1000);
+          },
+        },
+      });
+    };
+
+    if (!window.YT) {
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.body.appendChild(tag);
+      window.onYouTubeIframeAPIReady = createPlayer;
+    } else {
+      createPlayer();
+    }
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [lesson]);
 
   if (!lesson) {
     return (
@@ -12,41 +86,13 @@ function LessonPlayer({ lesson }) {
     );
   }
 
-  const getYouTubeEmbedURL = (url) => {
-    const urlObj = new URL(url);
-    const videoId = urlObj.searchParams.get("v"); // extract v param
-    return `https://www.youtube.com/embed/${videoId}`;
-  };
-
-  const embedURL = getYouTubeEmbedURL(lesson.videoUrl);
-
-
   return (
     <div className="lesson-player">
+      <h2 className="lesson-title">{lesson.title}</h2>
 
-      <div className="lesson-header">
-        <h2>{lesson.title}</h2>
+      <div className="video-container">
+        <div id="yt-player"></div>
       </div>
-
-      {lesson.videoUrl && (
-        <div className="video-container">
-
-          <iframe width="560" height="315"
-            src={embedURL}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen>
-          </iframe>
-        </div>
-      )}
-
-      {lesson.content && (
-        <div className="lesson-content">
-          <p>{lesson.content}</p>
-        </div>
-      )}
-
     </div>
   );
 }

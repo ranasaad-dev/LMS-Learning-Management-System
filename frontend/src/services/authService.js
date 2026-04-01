@@ -29,7 +29,6 @@ const updateProfile = async (id, data) => {
   try {
     const response = await apiClient.put(`/auth/profile/${id}`, data);
     return response.data;
-    console.log(response.data);
   } catch (error) {
     throw error.response?.data || { message: error };
   }
