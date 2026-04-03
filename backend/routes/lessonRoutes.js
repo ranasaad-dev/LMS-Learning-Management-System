@@ -6,11 +6,11 @@ const { protect } = require("../middleware/authMiddleware");
 
 
 // CREATE LESSON (Instructor)
-router.post("/", protect(["instructor"])  , lessonController.createLesson);
+router.post("/", protect(["instructor", "admin"])  , lessonController.createLesson);
 
 
 // GET LESSONS BY COURSE
-router.get("/course/:courseId", protect , lessonController.getLessonsByCourse);
+router.get("/:id", protect(["instructor", "admin"]) , lessonController.getLessonsByCourse);
 
 
 // UPDATE LESSON

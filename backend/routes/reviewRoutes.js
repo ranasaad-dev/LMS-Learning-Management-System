@@ -14,11 +14,11 @@ router.get("/:id", reviewController.getCourseReviews);
 
 
 // UPDATE REVIEW
-router.put("/:id", protect(["instructor", "admin"])  , reviewController.updateReview);
+router.put("/:id", protect(["student"])  , reviewController.updateReview);
 
 
 // DELETE REVIEW
-router.delete("/:id", protect(["instructor", "admin"])  , reviewController.deleteReview);
+router.delete("/:id", protect(["student"])  , reviewController.deleteReview);
 
 
 module.exports = router;

@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 // CREATE LESSON (Instructor only)
 exports.createLesson = async (req, res) => {
   try {
-    const { title, videoUrl, duration, course} = req.body;
+    const { title, videoUrl, duration, course } = req.body;
     if (!mongoose.Types.ObjectId.isValid(course)) {
       return res.status(400).json({ message: "Invalid course ID" });
     }
@@ -15,12 +15,14 @@ exports.createLesson = async (req, res) => {
     if (!foundCourse) {
       return res.status(404).json({ message: "Course not found" });
     }
-
-    if (course.instructor.toString() !== req.user.id) {
-      const error = new Error("Not your course !");
-      error.statusCode = 403;
-      throw error;
+    if (req.user.role != "admin") {
+      if (foundCourse.instructor.toString() !== req.user.id) {
+        const error = new Error("Not your course !");
+        error.statusCode = 403;
+        throw error;
+      }
     }
+
 
     // Safe numeric duration
     const lessonDuration = Number(duration) || 0;
@@ -31,7 +33,7 @@ exports.createLesson = async (req, res) => {
       videoUrl,
       duration: lessonDuration,
       course: course,
-     
+
     });
 
     // Update course
@@ -50,8 +52,7 @@ exports.createLesson = async (req, res) => {
 // GET LESSONS BY COURSE
 exports.getLessonsByCourse = async (req, res) => {
   try {
-    const lessons = await Lesson.find({ course: req.params.courseId })
-      .sort({ createdAt: 1 });
+    const lessons = await Lesson.find({ "course": req.params.id })
     res.json(lessons);
   } catch (error) {
     res.status(500).json({ message: error.message });

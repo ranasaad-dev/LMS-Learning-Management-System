@@ -17,7 +17,7 @@ return (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
   } catch (error) {
-    return res.status(401).json({ message: "Token invalid" });
+    return res.status(401).json({ message: "Invalid token" });
   }
 
   if(role[0] == req.user.role || role[1] == req.user.role || role[2] == req.user.role ){

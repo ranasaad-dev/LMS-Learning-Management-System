@@ -1,4 +1,4 @@
-import apiClient from "./apiClient";
+import apiClient from "../utils/apiClient";
 
 const getLessonsByCourse = async (courseId) => {
   const response = await apiClient.get(`/lessons/course/${courseId}`);
