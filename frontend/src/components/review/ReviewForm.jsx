@@ -17,8 +17,7 @@ function ReviewForm({ update, onReviewCreated }) {
     try {
   
       const newReview = await reviewService.createReview(courseId, review);
-      // `Learn` mounts `ReviewForm` without passing `update`.
-      // Only update local UI when a setter was provided.
+     
       if (typeof update === "function") {
         update((prev) => [newReview, ...prev]);
       }
@@ -39,11 +38,10 @@ function ReviewForm({ update, onReviewCreated }) {
 
   return (
     <div className="review-section">
-      <h3 className="review-title">Course Reviews</h3>
       <div className="review-form">
         <div className="rating-select">
-          <Label>Rating</Label>
-          <select value={review.rating} onChange={(e) => setReview({ ...review, rating: Number(e.target.value) })} >
+      <h3 className="review-title">Rating</h3>
+          <select className="review-rating" value={review.rating} onChange={(e) => setReview({ ...review, rating: Number(e.target.value) })} >
             <option value={5}>5 ⭐</option>
             <option value={4}>4 ⭐</option>
             <option value={3}>3 ⭐</option>
@@ -53,7 +51,7 @@ function ReviewForm({ update, onReviewCreated }) {
 
         </div>
 
-        <textarea className="review-input" placeholder="Write your review..." value={review.comment} onChange={(e) => setReview({ ...review, comment: e.target.value })} />
+        <textarea id="opinion" className="review-input" placeholder="Write your review..." value={review.comment} onChange={(e) => setReview({ ...review, comment: e.target.value })} />
 
         <button
           className="review-submit"

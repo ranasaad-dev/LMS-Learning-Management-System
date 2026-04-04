@@ -3,7 +3,7 @@ import { FaPlayCircle } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import ProgressBar from "../ui/ProgressBar";
 
-function LessonPlayer({ lesson, onComplete, setProgress, onProgress }) {
+function LessonPlayer({ lesson, onComplete, setProgress, onProgress, start = 0 }) {
   const playerRef = useRef(null);
   const intervalRef = useRef(null);
   const completionFiredRef = useRef(false);
@@ -62,54 +62,73 @@ function LessonPlayer({ lesson, onComplete, setProgress, onProgress }) {
     }
 
     if (intervalRef.current) clearInterval(intervalRef.current);
-console.log(lessonProgress);
+
+    const startSec = Math.max(0, Number(start) || 0);
+
     const createPlayer = () => {
       playerRef.current = new window.YT.Player("yt-player", {
         videoId,
         playerVars: {
-          autoplay: 1,
-          controls: 0, 
+          autoplay: 0,
+          controls: 0,
+          modestbranding: 1,
           rel: 0,
-          disablekb:1,
-          color:"red",
-          start: 0,
-          fs: 1, // hide fullscreen button when controls are minimal
         },
         events: {
-          onReady: () => {
+          onReady: (event) => {
+            const player = event.target;
+
+            const ytDuration = player.getDuration();
+            const lessonDuration = Number(lesson.duration);
+            const effectiveDuration =
+              lessonDuration && lessonDuration > 0 ? lessonDuration : ytDuration;
+
+            let seekToTime = startSec;
+            if (effectiveDuration > 0) {
+              seekToTime = Math.min(startSec, Math.max(0, effectiveDuration - 0.25));
+            }
+
+            if (seekToTime > 0 && typeof player.seekTo === "function") {
+              player.seekTo(seekToTime, true);
+            }
+
+            if (effectiveDuration > 0) {
+              const initialWatched = Math.min(seekToTime, effectiveDuration);
+              setLessonProgress(
+                Math.min(100, Math.round((initialWatched / effectiveDuration) * 100))
+              );
+            }
+
             intervalRef.current = setInterval(() => {
               if (!playerRef.current) return;
 
               const current = playerRef.current.getCurrentTime();
-              const ytDuration = playerRef.current.getDuration();
+              const ytDur = playerRef.current.getDuration();
 
-              // Use the lesson duration from the backend (prevents anti-cheat 400s)
-              // but fall back to YouTube duration if it wasn't provided.
-              const lessonDuration = Number(lesson.duration);
-              const effectiveDuration =
-                lessonDuration && lessonDuration > 0 ? lessonDuration : ytDuration;
+              const lessonDur = Number(lesson.duration);
+              const effDur =
+                lessonDur && lessonDur > 0 ? lessonDur : ytDur;
 
-              if (!effectiveDuration) return;
+              if (!effDur) return;
 
-              const watchedSeconds = Math.min(current, effectiveDuration);
-              const percent = (watchedSeconds / effectiveDuration) * 100;
+              const watchedSeconds = Math.min(current, effDur);
+              const percent = (watchedSeconds / effDur) * 100;
               const cleanPercent = Math.min(100, Math.round(percent));
 
               setLessonProgress(cleanPercent);
               if (typeof setProgress === "function") setProgress(cleanPercent);
 
               if (typeof onProgress === "function") {
-                onProgress({ watchedSeconds, duration: effectiveDuration });
+                onProgress({ watchedSeconds, duration: effDur });
               }
 
-              // Complete at ≥95% (single fire); show full bar at 100%
               if (percent >= 95) {
                 if (!completionFiredRef.current) {
                   completionFiredRef.current = true;
                   setLessonProgress(100);
                   if (typeof setProgress === "function") setProgress(100);
                   if (typeof onComplete === "function") {
-                    onComplete({ watchedSeconds, duration: effectiveDuration });
+                    onComplete({ watchedSeconds, duration: effDur });
                   }
                 }
                 clearInterval(intervalRef.current);

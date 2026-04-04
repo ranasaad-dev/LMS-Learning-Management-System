@@ -2,12 +2,12 @@
   width: 100%;
   background: var(--less-dark);
   border-radius: 10px;
-  padding: 24px;
+  padding: 12px;
 }
 
 .lesson-progress .progress-wrapper {
   margin-bottom: 12px;
-  padding: 12px;
+  padding: 6px;
 }
 
 .lesson-progress {
@@ -31,6 +31,7 @@
   font-family: var(--heading-font);
   color: var(--full-light);
   margin-bottom: 18px;
+  font-variant-caps: small-case;
 }
 
 /* Video */
@@ -38,7 +39,7 @@
 .video-container {
   position: relative;
   width: 100%;
-  padding-top: 56.25%; /* 16:9 */
+  
   background: black;
   border-radius: 8px;
   overflow: hidden;
@@ -53,12 +54,6 @@
   height: 100%;
 
   border: none;
-}
-
-/* Lesson text */
-
-.lesson-content {
-  margin-top: 20px;
 }
 
 .lesson-content p {

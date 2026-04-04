@@ -10,7 +10,7 @@ function CourseProgressCard({ enrollment }) {
 
   const unenroll = async () => {
     if (!course || !course._id) {
-      alert("Course information is missing.");
+      notify("Course information is missing.", "error");
       return;
     }
   
@@ -26,7 +26,7 @@ function CourseProgressCard({ enrollment }) {
   
     } catch (error) {
       console.error("Unenroll error:", error);
-      alert("Something went wrong while unenrolling.");
+      notify("Something went wrong while unenrolling.", "error");
     }
   };
 
@@ -41,7 +41,7 @@ function CourseProgressCard({ enrollment }) {
           {course.description?.substring(0, 100)}...
         </p>
 
-        <ProgressBar progress={progress || 0} />
+        <ProgressBar progress={Math.floor(progress) || 0} />
 
         <Link
           to={`/learn/${course._id}`}

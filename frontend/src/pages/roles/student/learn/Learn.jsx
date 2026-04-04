@@ -8,7 +8,7 @@ import LessonPlayer from "../../../../components/lesson/LessonPlayer";
 import ProgressBar from "../../../../components/ui/ProgressBar";
 import ReviewForm from "../../../../components/review/ReviewForm";
 import ReviewList from "../../../../components/review/ReviewList";
-
+import Loading from "../../../../components/ui/Loading";
 import { FaPlayCircle, FaLock, FaCheckCircle } from "react-icons/fa";
 import "./Learn.css";
 
@@ -21,7 +21,8 @@ function Learn() {
 
   const [completedLessonIds, setCompletedLessonIds] = useState(new Set());
   const [progress, setProgress] = useState(0);
-
+  /** Mirrors enrollment.lessonProgress for resume (watchedSeconds per lesson). */
+  const [lessonProgressEntries, setLessonProgressEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [reviewsVersion, setReviewsVersion] = useState(0);
@@ -66,6 +67,7 @@ function Learn() {
       setCurrentLesson(lessons[0] || null);
       setCompletedLessonIds(new Set());
       setProgress(0);
+      setLessonProgressEntries([]);
       return;
     }
 
@@ -76,10 +78,9 @@ function Learn() {
     );
 
     setCompletedLessonIds(completed);
-    setProgress(lp[lp.length - 1].watchedSeconds || 0);
-console.log(progress);
+    setProgress(enrollment.progress ?? 0);
+    setLessonProgressEntries(lp);
     setCurrentLesson(getResumeLesson(lp, lessons));
- 
   };
 
   // ================= RESUME =================
@@ -113,6 +114,19 @@ console.log(progress);
     return currentLesson && completedLessonIds.has(currentLesson._id?.toString());
   }, [currentLesson, completedLessonIds]);
 
+  /** Saved watch position (seconds) for the active lesson — from enrollment.lessonProgress. */
+  const startSeconds = useMemo(() => {
+    if (!currentLesson?._id || !lessonProgressEntries.length) return 0;
+    const entry = lessonProgressEntries.find(
+      (e) => e.lesson?.toString() === currentLesson._id.toString()
+    );
+    const raw = Number(entry?.watchedSeconds);
+    if (Number.isNaN(raw) || raw < 0) return 0;
+    const cap = Number(currentLesson.duration);
+    if (cap > 0 && raw > cap) return cap;
+    return raw;
+  }, [currentLesson, lessonProgressEntries]);
+
   // ================= HELPERS =================
   const isCompleted = useCallback(
     (id) => completedLessonIds.has(id?.toString()),
@@ -136,6 +150,23 @@ console.log(progress);
       watchedSeconds: data.watchedSeconds,
       duration: data.duration,
     };
+
+    setLessonProgressEntries((prev) => {
+      const id = currentLesson._id.toString();
+      const idx = prev.findIndex((e) => e.lesson?.toString() === id);
+      const row = {
+        lesson: currentLesson._id,
+        watchedSeconds: data.watchedSeconds,
+        completed: idx >= 0 ? prev[idx].completed : false,
+        lastWatchedAt: new Date().toISOString(),
+      };
+      if (idx >= 0) {
+        const next = [...prev];
+        next[idx] = { ...next[idx], ...row };
+        return next;
+      }
+      return [...prev, row];
+    });
   }, [currentLesson]);
 
   // Auto-save every 5s
@@ -192,6 +223,7 @@ console.log(progress);
       });
 
       setProgress(updated.progress ?? 0);
+      setLessonProgressEntries(lp);
     } catch (err) {
       console.error("Complete error:", err);
     } finally {
@@ -212,7 +244,7 @@ console.log(progress);
   }, []);
 
   // ================= UI =================
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading />;
 
   return (
     <div className="course-player">
@@ -253,12 +285,12 @@ console.log(progress);
 
       {/* MAIN */}
       <div className="right-sidebar">
-        {/* <ProgressBar progress={progress} /> */}
-
+    
         <LessonPlayer
           lesson={currentLesson}
           onComplete={handleComplete}
           onProgress={handleProgress}
+          start={startSeconds}
         />
 
         <button

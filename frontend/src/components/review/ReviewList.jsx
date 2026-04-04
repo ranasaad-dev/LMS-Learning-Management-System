@@ -89,7 +89,7 @@ function ReviewList({ r }) {
             <div className="review-header">
               <span className="review-user">
                 {rev.student?.name || "Student"}
-                <span className="review-rating">
+                <span >
                   {"⭐".repeat(rev.rating)}
                 </span>
               </span>
