@@ -1,5 +1,5 @@
 .manage-courses-container {
-    max-width: 900px;
+    /* max-width: 900px; */
     margin: 2rem auto;
     font-family: var(--body-font);
     color: var(--full-light);
@@ -58,7 +58,7 @@
   }
   
   /* Modal */
-  .modal {
+  .modal-wrapper {
     position: fixed;
     top: 0;
     left: 0;
@@ -71,11 +71,14 @@
   }
   
   .modal-content {
-    background: var(--less-dark);
+    background: var(--less-light);
     padding: 2rem;
     border-radius: 10px;
     width: 100%;
     max-width: 500px;
+    position: fixed;
+    top: 0;
+    left: 25%;
   }
   
   .course-form .form-group {

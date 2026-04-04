@@ -164,7 +164,7 @@ function ManageCourses({ adminId }) {
       )}
 
       {showForm && (
-        <div className="modal">
+        <div className="modal-wrapper">
           <div className="modal-content">
             <h3>{editingCourse ? "Edit Course" : "Create Course"}</h3>
             <form onSubmit={handleSubmit} className="course-form">

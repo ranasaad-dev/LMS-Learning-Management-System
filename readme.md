@@ -14,7 +14,7 @@ The project is inspired by platforms like **Udemy** and **Coursera**.
 - View course details
 - Enroll in courses
 - Watch lessons
-- Track learning progress (Soon)
+- Track learning progress 
 - Write course reviews
 - Manage profile
 - Stay up-to-date throgh Notice Board
@@ -24,6 +24,8 @@ The project is inspired by platforms like **Udemy** and **Coursera**.
 - Manage lessons
 - Update course content
 - Manage Notice Board
+- View enrolled students (only his/her course)
+- View Reviews
 
 ## 👑 Admin Features
 - Manage users
@@ -49,6 +51,7 @@ The project is inspired by platforms like **Udemy** and **Coursera**.
 - Mongoose
 - JWT Authentication
 - REST API
+- CORS
 
 ---
 
@@ -164,7 +167,7 @@ User Roles
 
 ## Protected routes require:
 
-Authorization: Bearer TOKEN
+Authentication and Authorization: Bearer TOKEN
 📂 Project Structure
 ```
 LMS
@@ -187,12 +190,16 @@ LMS
 ```
 🎯 Future Improvements
 
-### Possible future features:
+### Upcoming features:
 Course search and filters
 Video streaming optimization
 Payment integration
-Course certificates
+Google Login
+OTP-verification
+Open Discuession
+Course Discussion
+Assignments
 
 ## 👨‍💻 Author
 
-Developed as a full-stack LMS project using React and Node.js.
+Rana Saad
