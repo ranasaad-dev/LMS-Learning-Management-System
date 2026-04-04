@@ -11,6 +11,15 @@
     --less-light: #abb9a6;
     --full-light: #fff;
   }
+
+:root {
+    --heading-font: "Space Grotesk", sans-serif;
+    --body-font: "Inter", sans-serif;
+    --full-dark: #181C14;
+    --less-dark: #3C3D37;
+    --less-light: #abb9a6;
+    --full-light: #fff;
+}
   
   body {
     font-family: var(--body-font);

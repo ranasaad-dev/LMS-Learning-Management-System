@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import ProgressBar from "../../ui/ProgressBar";
-import enrollmentService from "../../../services/enrollmentService";
+import enrollmentService from "/src/services/enrollmentService.js";
 import "./CourseProgressCard.css";
+import notify from "../../ui/notify/Notify.js";
+import { useEffect } from "react";
 
 function CourseProgressCard({ enrollment }) {
   const { course, progress } = enrollment;
@@ -16,10 +18,10 @@ function CourseProgressCard({ enrollment }) {
       const response = await enrollmentService.unenrollInCourse(course._id);
   
       if (response) {
-        alert("Successfully unenrolled from the course.");
+        notify("Successfully unenrolled from the course.", "success");
         window.location.reload(); // refresh page
       } else {
-        alert("Unenrollment failed. Please try again.");
+        notify("Unenrollment failed. Please try again.", "error");
       }
   
     } catch (error) {

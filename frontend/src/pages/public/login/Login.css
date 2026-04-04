@@ -4,18 +4,21 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #000000, #d9e2ec);
+  background: radial-gradient(1000px circle at 20% 10%, rgba(168, 185, 166, 0.22), transparent 55%),
+    linear-gradient(135deg, var(--full-dark), #2b2d26);
   padding: 20px;
 }
 
 .login-card {
-  background-color: #fff;
+  background-color: rgba(60, 61, 55, 0.85);
   padding: 40px 30px;
   border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
   width: 100%;
   max-width: 400px;
   text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
 }
 
 .login-title {
@@ -35,17 +38,19 @@
 .login-form input {
   width: 100%;
   padding: 12px 15px;
-  border: 1px solid #050505;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
   font-family: var(--body-font, "Inter", sans-serif);
   font-size: 1rem;
+  color: var(--full-light);
+  background: rgba(24, 28, 20, 0.55);
   transition: border 0.2s ease;
 }
 
 .login-form input:focus {
   outline: none;
-  border-color: #131212;
-  box-shadow: 0 0 0 2px rgba(255, 111, 97, 0.2);
+  border-color: rgba(171, 185, 166, 0.7);
+  box-shadow: 0 0 0 2px rgba(171, 185, 166, 0.22);
 }
 
 .eye-icon {
@@ -54,7 +59,7 @@
   top: 70%;
 
   transform: translateY(-50%);
-  color: #ffffff;
+  color: var(--full-light);
   height: 1.3rem;
   width: 1.3rem;
   cursor: pointer;
@@ -72,7 +77,7 @@
   font-family: var(--heading-font, "Space Grotesk", sans-serif);
   font-size: 1.1rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--full-dark);
   background-color: #0f0f0e;
   border: none;
   border-radius: 10px;
@@ -81,9 +86,9 @@
 }
 
 .login-btn:hover {
-  background-color: #e9e8e8;
+  background-color: var(--full-light);
   transform: translateY(-2px);
-  color: #000;
+  color: var(--full-dark);
 }
 
 @media (max-width: 480px) {

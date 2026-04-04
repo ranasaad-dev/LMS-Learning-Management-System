@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useAuth } from "../../../../context/AuthContext";
-import apiClient from "../../../../services/apiClient"; // Axios instance
 import notify from "../../../../components/ui/notify/Notify";
 import authService from "../../../../services/authService";
 import Label from "/src/components/ui/label/Label";

@@ -10,15 +10,15 @@ router.post("/", protect(["instructor", "admin"])  , lessonController.createLess
 
 
 // GET LESSONS BY COURSE
-router.get("/:id", protect(["instructor", "admin"]) , lessonController.getLessonsByCourse);
+router.get("/:id", protect(["student", "instructor", "admin"]) , lessonController.getLessonsByCourse);
 
 
 // UPDATE LESSON
-router.put("/:id", protect(["instructor"])  , lessonController.updateLesson);
+router.put("/:id", protect(["instructor", "admin"])  , lessonController.updateLesson);
 
 
 // DELETE LESSON
-router.delete("/:id", protect(["instructor"])  , lessonController.deleteLesson);
+router.delete("/:id", protect(["instructor", "admin"])  , lessonController.deleteLesson);
 
 
 module.exports = router;

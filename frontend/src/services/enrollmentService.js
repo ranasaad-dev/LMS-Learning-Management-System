@@ -1,4 +1,4 @@
-import apiClient from "./apiClient";
+import apiClient from "../utils/apiClient";
 
 const enrollInCourse = async (courseId) => {
   const response = await apiClient.post(`/enroll/${courseId}`);
@@ -6,7 +6,8 @@ const enrollInCourse = async (courseId) => {
 };
 
 const getMyCourses = async () => {
-  const response = await apiClient.get("/enroll/my-courses");
+  // Backend: GET /enroll
+  const response = await apiClient.get("/enroll");
   return response.data;
 };
 
@@ -16,12 +17,19 @@ const unenrollInCourse = async (courseId) => {
 };
 
 const courseProgress = async (courseId, progress) => {
-  const response = await apiClient.put(`/enroll/${courseId}/progress`, progress);
+
+  const response = await apiClient.put(`/enroll/${courseId}`, progress);
   return response.data;
 };
 
 const getCourseStudents = async (courseId) => {
-  const response = await apiClient.get(`/enroll/course/${courseId}/students`);
+  // Backend: GET /enroll/:id/students
+  const response = await apiClient.get(`/enroll/${courseId}/students`);
+return response.data;
+}
+
+const lessonProgress = async (id, data) => {
+const response = await apiClient.put(`/enroll/${id}`, data);
 return response.data;
 }
 
@@ -31,4 +39,5 @@ export default {
 unenrollInCourse,
 getCourseStudents,
 courseProgress,
+lessonProgress
 };

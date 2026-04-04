@@ -6,7 +6,7 @@ nav {
     padding: 1rem;
     padding-top: 0;
     background-color: black;
-    color: var(full-light);
+    color: var(--full-light);
 }
 
 .navbar-fp{

@@ -96,7 +96,7 @@ function ReviewList({ r }) {
               {rev.student && rev.student._id === user._id ?
                 isEditing ?
                   <span>
-                    < button className="tick-btn" onClick={() => handleUpdate(rev._id)}>✔</button>
+                    <button className="tick-btn" onClick={() => handleUpdate(rev._id)}>✔</button>
                     <button className="cross-btn" onClick={() => setIsEditing(false)}>✖</button>
                   </span> :
                   <span>

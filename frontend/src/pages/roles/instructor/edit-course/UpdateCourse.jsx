@@ -47,7 +47,7 @@ function UpdateCourse() {
             setError("");
             await courseService.updateCourse(id, course);
             setSuccess("Course updated successfully");
-            setTimeout(() => navigate(`/courses/${id}`), 1500);
+            setTimeout(() => navigate(`/manage-course/${id}`), 1500);
         } catch (err) {
             setError("Failed to update course");
         } finally {

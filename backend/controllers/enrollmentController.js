@@ -51,63 +51,109 @@ exports.getMyCourses = async (req, res) => {
 // UPDATE PROGRESS
 exports.updateProgress = async (req, res) => {
   try {
-    const { lessonId } = req.body;
+    // ✅ Expected from frontend:
+    // {
+    //   lessonId: "lesson_id_here",
+    //   watchedSeconds: number,
+    //   duration: number (optional, only if lesson.duration is missing)
+    // }
+
+    const { lessonId, duration } = req.body;
     const watchedSeconds = Number(req.body.watchedSeconds);
 
-    if (!lessonId || watchedSeconds == null) {
-      return res.status(400).json({ message: "Missing required fields" });
+    // 🔒 Validation
+    if (!lessonId || Number.isNaN(watchedSeconds)) {
+      return res.status(400).json({ message: "lessonId and watchedSeconds are required" });
     }
 
+    // 🔍 Find enrollment
     const enrollment = await Enrollment.findOne({
       student: req.user.id,
       course: req.params.id
     });
 
-    if (!enrollment) return res.status(404).json({ message: "Enrollment not found" });
+    if (!enrollment) {
+      return res.status(404).json({ message: "Enrollment not found" });
+    }
 
+    // 🔍 Find lesson
     const lesson = await Lesson.findById(lessonId);
-    if (!lesson) return res.status(404).json({ message: "Lesson not found" });
+    if (!lesson) {
+      return res.status(404).json({ message: "Lesson not found" });
+    }
 
-    // Find or create lesson progress entry
-    let entry = enrollment.lessonProgress.find(l => l.lesson.toString() === lessonId);
+    // ✅ Determine duration (important for progress calc)
+    let lessonDuration = lesson.duration || 0;
+
+    // If duration missing, accept frontend value
+    if (lessonDuration <= 0 && duration && duration > 0) {
+      lessonDuration = duration;
+
+      // Save it for future use
+      lesson.duration = lessonDuration;
+      await lesson.save();
+    }
+
+    // 🛑 Prevent invalid progress
+    if (lessonDuration > 0 && watchedSeconds > lessonDuration) {
+      return res.status(400).json({
+        message: `watchedSeconds exceeds lesson duration (${lessonDuration})`
+      });
+    }
+
+    // 🔁 Find existing lesson progress
+    let entry = enrollment.lessonProgress.find(
+      lp => lp.lesson.toString() === lessonId
+    );
+
+    // ➕ Create if not exists
     if (!entry) {
       entry = {
         lesson: lessonId,
-        watchedSeconds: watchedSeconds,
+        watchedSeconds: 0,
         completed: false,
         lastWatchedAt: new Date()
       };
       enrollment.lessonProgress.push(entry);
     }
 
-    // Anti-cheat: cannot watch more than lesson duration + buffer
-    if (watchedSeconds > lesson.duration) {
-      return res.status(400).json({ message: `Invalid progress detected. Lesson Duration = ${lesson.duration}` });
-    }
-
-    // Never go backward
+    // ⛔ Never go backward
     entry.watchedSeconds = Math.max(entry.watchedSeconds, watchedSeconds);
     entry.lastWatchedAt = new Date();
 
-    // Mark complete if watched >= 95%
-    if (entry.watchedSeconds >= lesson.duration * 0.95) {
-      entry.completed = true;
+    // ✅ Completion logic (≥ 95%)
+    if (lessonDuration > 0) {
+      const ratio = entry.watchedSeconds / lessonDuration;
+      entry.completed = ratio >= 0.95;
     }
 
-    // Update total progress
-    const lessons = await Lesson.find({ course: req.params.id });
-    const totalDuration = lessons.reduce((sum, l) => sum + (l.duration || 0), 0);
-    const totalWatched = enrollment.lessonProgress.reduce((sum, l) => sum + l.watchedSeconds, 0);
+    // =========================
+    // 📊 TOTAL COURSE PROGRESS
+    // =========================
 
-    enrollment.progress = totalDuration ? Math.min(100, (totalWatched / totalDuration) * 100) : 0;
-    enrollment.currentLesson = lessonId;
+    const lessons = await Lesson.find({ course: req.params.id }).select("duration");
+  
+    const totalDuration = lessons.reduce(
+      (sum, l) => sum + (l.duration || 0),
+      0
+    );
+
+    const totalWatched = enrollment.lessonProgress.reduce(
+      (sum, lp) => sum + lp.watchedSeconds,
+      0
+    );
+
+    enrollment.progress = totalDuration
+      ? Math.min(100, (totalWatched / totalDuration) * 100)
+      : 0;
 
     await enrollment.save();
 
+    // 📤 Response
     res.json({
-      progress: Math.round(enrollment.progress),
-      lessonProgress: enrollment.lessonProgress,
-      currentLesson: enrollment.currentLesson
+      success: true,
+      progress: Math.round(enrollment.progress), // overall %
+      lessonProgress: enrollment.lessonProgress
     });
 
   } catch (error) {
@@ -126,8 +172,8 @@ exports.unenrollCourse = async (req, res) => {
       course: req.params.id
     });
     if (!enrollment) return res.status(404).json({ message: "Enrollment not found" });
-    course.studentsEnrolled -+ 1;
-    await course.save()
+    course.studentsEnrolled = Math.max(0, (course.studentsEnrolled || 0) - 1);
+    await course.save();
     res.json({ message: "Unenrolled successfully" });
   } catch (error) {
     console.error(error);

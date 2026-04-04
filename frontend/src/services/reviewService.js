@@ -1,7 +1,8 @@
-import apiClient from "./apiClient";
+import apiClient from "../utils/apiClient";
 
 const getCourseReviews = async (courseId) => {
-  const response = await apiClient.get(`/reviews/course/${courseId}`);
+  // Backend: GET /reviews/:id
+  const response = await apiClient.get(`/reviews/${courseId}`);
   return response.data;
 };
 
@@ -15,7 +16,7 @@ const updateReview = async (id, data) => {
   return response.data;
 };
 
-const deleteReview = async (id, review) => {
+const deleteReview = async (id) => {
   const response = await apiClient.delete(`/reviews/${id}`);
   return response.data;
 };

@@ -1,41 +1,79 @@
 import "./LessonPlayer.css";
 import { FaPlayCircle } from "react-icons/fa";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import ProgressBar from "../ui/ProgressBar";
 
-function LessonPlayer({ lesson, onComplete, setProgress }) {
+function LessonPlayer({ lesson, onComplete, setProgress, onProgress }) {
   const playerRef = useRef(null);
   const intervalRef = useRef(null);
+  const completionFiredRef = useRef(false);
+  const [lessonProgress, setLessonProgress] = useState(0);
 
   useEffect(() => {
     if (!lesson?.videoUrl) return;
+    completionFiredRef.current = false;
 
-    const getVideoId = (url) => {
+    // Extract a YouTube id from common URL formats.
+    const extractYouTubeId = (input) => {
+      if (!input) return null;
+
+      // Sometimes we store just the id.
+      if (/^[a-zA-Z0-9_-]{11}$/.test(input)) return input;
+
       try {
-        const urlObj = new URL(url);
-        return urlObj.searchParams.get("v");
+        const urlObj = new URL(input);
+        const host = urlObj.hostname.replace(/^www\./, "");
+        const pathname = urlObj.pathname || "";
+
+        // youtu.be/<id>
+        if (host === "youtu.be") {
+          const id = pathname.split("/").filter(Boolean)[0];
+          return id || null;
+        }
+
+        // youtube.com/watch?v=<id>
+        const v = urlObj.searchParams.get("v");
+        if (v) return v;
+
+        // youtube.com/embed/<id>, /shorts/<id>, /live/<id>
+        const parts = pathname.split("/").filter(Boolean);
+        const idx = ["embed", "shorts", "live"].indexOf(parts[0]);
+        if (idx !== -1 && parts[1]) return parts[1];
+
+        // Fallback: if the path is just "<id>"
+        if (parts[0] && /^[a-zA-Z0-9_-]{11}$/.test(parts[0])) return parts[0];
       } catch {
-        return null;
+        // ignore
       }
+
+      return null;
     };
 
-    const videoId = getVideoId(lesson.videoUrl);
+    setLessonProgress(0);
+    if (typeof setProgress === "function") setProgress(0);
+
+    const videoId = extractYouTubeId(lesson.videoUrl);
     if (!videoId) return;
 
     // Cleanup
     if (playerRef.current) {
-      playerRef.current.destroy();
+      if (typeof playerRef.current.destroy === "function") playerRef.current.destroy();
       playerRef.current = null;
     }
 
     if (intervalRef.current) clearInterval(intervalRef.current);
-
+console.log(lessonProgress);
     const createPlayer = () => {
       playerRef.current = new window.YT.Player("yt-player", {
         videoId,
         playerVars: {
-          autoplay: 0, // ✅ FIXED
-          modestbranding: 1,
+          autoplay: 1,
+          controls: 0, 
           rel: 0,
+          disablekb:1,
+          color:"red",
+          start: 0,
+          fs: 1, // hide fullscreen button when controls are minimal
         },
         events: {
           onReady: () => {
@@ -43,18 +81,37 @@ function LessonPlayer({ lesson, onComplete, setProgress }) {
               if (!playerRef.current) return;
 
               const current = playerRef.current.getCurrentTime();
-              const duration = playerRef.current.getDuration();
+              const ytDuration = playerRef.current.getDuration();
 
-              if (!duration) return;
+              // Use the lesson duration from the backend (prevents anti-cheat 400s)
+              // but fall back to YouTube duration if it wasn't provided.
+              const lessonDuration = Number(lesson.duration);
+              const effectiveDuration =
+                lessonDuration && lessonDuration > 0 ? lessonDuration : ytDuration;
 
-              const percent = (current / duration) * 100;
+              if (!effectiveDuration) return;
+
+              const watchedSeconds = Math.min(current, effectiveDuration);
+              const percent = (watchedSeconds / effectiveDuration) * 100;
               const cleanPercent = Math.min(100, Math.round(percent));
 
-              setProgress(cleanPercent);
+              setLessonProgress(cleanPercent);
+              if (typeof setProgress === "function") setProgress(cleanPercent);
 
-              // ✅ COMPLETE ONLY AT 95%
+              if (typeof onProgress === "function") {
+                onProgress({ watchedSeconds, duration: effectiveDuration });
+              }
+
+              // Complete at ≥95% (single fire); show full bar at 100%
               if (percent >= 95) {
-                onComplete();
+                if (!completionFiredRef.current) {
+                  completionFiredRef.current = true;
+                  setLessonProgress(100);
+                  if (typeof setProgress === "function") setProgress(100);
+                  if (typeof onComplete === "function") {
+                    onComplete({ watchedSeconds, duration: effectiveDuration });
+                  }
+                }
                 clearInterval(intervalRef.current);
               }
             }, 1000);
@@ -63,7 +120,7 @@ function LessonPlayer({ lesson, onComplete, setProgress }) {
       });
     };
 
-    if (!window.YT) {
+    if (!window.YT || !window.YT.Player) {
       const tag = document.createElement("script");
       tag.src = "https://www.youtube.com/iframe_api";
       document.body.appendChild(tag);
@@ -74,6 +131,10 @@ function LessonPlayer({ lesson, onComplete, setProgress }) {
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
+      if (playerRef.current && typeof playerRef.current.destroy === "function") {
+        playerRef.current.destroy();
+      }
+      playerRef.current = null;
     };
   }, [lesson]);
 
@@ -89,6 +150,10 @@ function LessonPlayer({ lesson, onComplete, setProgress }) {
   return (
     <div className="lesson-player">
       <h2 className="lesson-title">{lesson.title}</h2>
+
+      <div className="lesson-progress">
+        <ProgressBar progress={lessonProgress} label="Lesson Progress" />
+      </div>
 
       <div className="video-container">
         <div id="yt-player"></div>

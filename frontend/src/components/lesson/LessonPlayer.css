@@ -5,6 +5,26 @@
   padding: 24px;
 }
 
+.lesson-progress .progress-wrapper {
+  margin-bottom: 12px;
+  padding: 12px;
+}
+
+.lesson-progress {
+  animation: lessonProgressIn 220ms ease-out;
+}
+
+@keyframes lessonProgressIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Lesson title */
 
 .lesson-header h2 {

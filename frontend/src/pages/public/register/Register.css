@@ -3,18 +3,21 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #000000, #5e6d80);
+  background: radial-gradient(1000px circle at 80% 15%, rgba(216, 203, 181, 0.25), transparent 55%),
+    linear-gradient(135deg, var(--full-dark), #2b2d26);
   padding: 20px;
 }
 
 .register-card {
-  background-color: #fff;
+  background-color: rgba(60, 61, 55, 0.85);
   padding: 40px 30px;
   border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
   width: 100%;
   max-width: 400px;
   text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
 }
 
 .register-title {
@@ -33,17 +36,19 @@
 .register-form input {
   width: 100%;
   padding: 12px 15px;
-  border: 1px solid #ccc;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
   font-family: var(--body-font, "Inter", sans-serif);
   font-size: 1rem;
   transition: border 0.2s ease;
+  color: var(--full-light);
+  background: rgba(24, 28, 20, 0.55);
 }
 
 .register-form input:focus {
   outline: none;
-  border-color: #000000;
-  box-shadow: 0 0 0 2px rgba(255, 111, 97, 0.2);
+  border-color: rgba(171, 185, 166, 0.75);
+  box-shadow: 0 0 0 2px rgba(171, 185, 166, 0.22);
 }
 
 
@@ -77,8 +82,8 @@
   font-family: var(--heading-font, "Space Grotesk", sans-serif);
   font-size: 1.1rem;
   font-weight: 700;
-  color: #fff;
-  background-color: #000000;
+  color: var(--full-dark);
+  background-color: var(--full-light);
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -86,9 +91,9 @@
 }
 
 .register-btn:hover {
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.85);
   transform: translateY(-2px);
-  color: #000000;
+  color: var(--full-dark);
 }
 
 @media (max-width: 480px) {

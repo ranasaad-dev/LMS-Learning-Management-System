@@ -2,11 +2,11 @@ const jwt = require("jsonwebtoken");
 
 exports.protect = (role) => {
 return (req, res, next) => {
-  
   let token;
 
-  if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
-    token = req.headers.authorization.split(" ")[1];
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.toLowerCase().startsWith("bearer ")) {
+    token = authHeader.split(" ")[1];
   }
 
   if (!token) {
@@ -20,15 +20,11 @@ return (req, res, next) => {
     return res.status(401).json({ message: "Invalid token" });
   }
 
-  if(role[0] == req.user.role || role[1] == req.user.role || role[2] == req.user.role ){
-    try{
-      next();
-    }catch(err){
-      return res.status(401).json({ message: err.message });
-    }
-  }else{
-    return res.status(401).json({ message: "Role invalid" });
+  const allowedRoles = Array.isArray(role) ? role : [role];
+  if (!allowedRoles.includes(req.user.role)) {
+    return res.status(403).json({ message: "Role invalid" });
   }
-  
+
+  return next();
 }
 };

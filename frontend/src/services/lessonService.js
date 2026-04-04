@@ -1,7 +1,8 @@
 import apiClient from "../utils/apiClient";
 
 const getLessonsByCourse = async (courseId) => {
-  const response = await apiClient.get(`/lessons/course/${courseId}`);
+  // Backend: GET /lessons/:id (course id)
+  const response = await apiClient.get(`/lessons/${courseId}`);
   return response.data;
 };
 const addLesson = async (lessonData) => {
@@ -14,9 +15,14 @@ const deleteLesson = async (lessonId) => {
   return response.data;
 };
 
+const updateLesson = async (lessonId,lessonData) => {
+  const response = await apiClient.put(`/lessons/${lessonId}`, lessonData)
+}
+
 
 export default {
   getLessonsByCourse, 
   addLesson,
   deleteLesson,
+  updateLesson
 };

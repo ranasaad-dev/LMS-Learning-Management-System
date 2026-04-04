@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import reviewService from "../../services/reviewService.js";
 import Label from "/src/components/ui/label/Label";
 
-function ReviewForm({ update }) {
+function ReviewForm({ update, onReviewCreated }) {
   
   const { courseId } = useParams();
   const [review, setReview] = useState({
@@ -17,13 +17,21 @@ function ReviewForm({ update }) {
     try {
   
       const newReview = await reviewService.createReview(courseId, review);
-      update((prev) => [newReview, ...prev]);
+      // `Learn` mounts `ReviewForm` without passing `update`.
+      // Only update local UI when a setter was provided.
+      if (typeof update === "function") {
+        update((prev) => [newReview, ...prev]);
+      }
+
+      if (typeof onReviewCreated === "function") {
+        onReviewCreated();
+      }
       setReview({
         rating: 5,
         comment: ""
       });
   
-    } catch (err) {
+    } catch {
       alert("Already Submited Review.");
    
     }

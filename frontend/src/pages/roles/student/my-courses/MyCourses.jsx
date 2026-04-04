@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import enrollmentService from "/src/services/enrollmentService";
+import enrollmentService from "/src/services/enrollmentService.js";
 import CourseProgressCard from "/src/components/course/course-progress-card/CourseProgressCard";
 import Loading from "../../../../components/ui/Loading";
 import "./MyCourses.css";

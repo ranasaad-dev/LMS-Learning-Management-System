@@ -1,5 +1,6 @@
 const Review = require("../models/reviewModel");
 const Course = require("../models/courseModel");
+const mongoose = require("mongoose");
 
 // ADD REVIEW
 exports.addReview = async (req, res) => {
@@ -31,6 +32,10 @@ exports.addReview = async (req, res) => {
 // GET REVIEWS FOR A COURSE
 exports.getCourseReviews = async (req, res) => {
   try {
+    const courseId = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(courseId)) {
+      return res.status(400).json({ message: "Invalid course ID" });
+    }
     const reviews = await Review.find({ course: req.params.id })
       .populate("student", "name").sort({ createdAt: -1 });
     res.json(reviews);
@@ -51,12 +56,43 @@ exports.updateReview = async (req, res) => {
     if (review.student.toString() !== req.user.id) {
       return res.status(403).json({ message: "Not allowed to edit seomeone else's review !" });
     }
+
+    // Whitelist updatable fields to avoid tampering (e.g. changing `student` or `course`)
+    const allowedFields = ["rating", "comment"];
+    const extraFields = Object.keys(req.body || {}).filter(
+      (key) => !allowedFields.includes(key)
+    );
+    if (extraFields.length) {
+      return res.status(400).json({
+        message: `Invalid fields: ${extraFields.join(", ")}`
+      });
+    }
+
+    const updatePayload = {};
+    if (req.body.rating !== undefined) {
+      const parsedRating = Number(req.body.rating);
+      if (Number.isNaN(parsedRating)) {
+        return res.status(400).json({ message: "Invalid rating" });
+      }
+      updatePayload.rating = parsedRating;
+    }
+    if (req.body.comment !== undefined) {
+      if (typeof req.body.comment !== "string") {
+        return res.status(400).json({ message: "Invalid comment" });
+      }
+      updatePayload.comment = req.body.comment;
+    }
+
+    if (Object.keys(updatePayload).length === 0) {
+      return res.status(400).json({ message: "No valid fields provided" });
+    }
+
     const updatedReview = await Review.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      updatePayload,
       { new: true, runValidators: true }
     );
-    res.json(updatedReview);
+    return res.json(updatedReview);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
