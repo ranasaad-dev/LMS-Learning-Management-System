@@ -1,0 +1,40 @@
+.otp-form{
+text-align: center;
+background-color: var(--less-dark);
+padding: 2rem;
+width: 50%;
+margin: 12% auto;
+
+}
+
+.otp-heading{
+margin: 12px;
+}
+
+.otp-fields {
+    width: 40px;
+    height: 40;
+    border-radius: 3px;
+    box-shadow: black 5px;
+    margin: 5px;
+    padding: 12px;
+    text-align: center;
+}
+.otp-submit{
+    width: 72px;
+    height: 40px;
+    margin: 16px auto;
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    align-items: center;
+    background-color: var(--full-light);
+    color: var(--full-dark);
+    border: 1px solid var(--less-light);
+    border-radius: 5px;
+}
+.otp-submit:hover{
+    background-color: var(--full-dark);
+    color: var(--full-light);
+}

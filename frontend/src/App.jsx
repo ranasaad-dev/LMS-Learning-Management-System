@@ -22,6 +22,7 @@ import ManageCourses from "./pages/roles/admin/manage-course/ManageCourse";
 import Notification from "./pages/public/notification/Notification";
 import ReviewList from "./components/review/ReviewList";
 import ViewStudents from "./pages/roles/instructor/view-students/ViewStudents";
+import Otp from "./pages/public/otp/Otp";
 
 function App() {
   return (
@@ -31,12 +32,13 @@ function App() {
 
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Otp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/courses" element={<CourseList />} />
           <Route path="/courses/:id" element={<CourseDetail />} />
           <Route path="/about" element={<About />} />
+
           {/* Protected Routes */}
           <Route path="/dashboard/:id" element={<Dashboard />} />
           <Route path="/NoticeBoard" element={<Notification />} />
