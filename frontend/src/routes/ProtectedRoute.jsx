@@ -14,7 +14,10 @@ function ProtectedRoute({ children, role }) {
   }
 
   if (role && user.role !== role) {
-    return <Navigate to="/" replace />;
+    if(localStorage.getItem("token")){
+      localStorage.removeItem("token");
+    }
+    return <Navigate to="/login" replace />;
   }
 
   return children;

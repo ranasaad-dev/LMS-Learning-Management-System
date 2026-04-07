@@ -86,13 +86,6 @@ Make sure the following tools are installed on your system:
 - npm
 - MongoDB
 
-### Install Dependencies (Ubuntu / Linux)
-
-```bash
-sudo apt update && sudo apt upgrade
-sudo apt install git nodejs npm mongodb
-```
-
 ## 📦 Installation
 
 Clone the repository and install dependencies.
@@ -112,22 +105,23 @@ Open a new terminal and run:
 mongod
 ```
 
-This will start the MongoDB server in the background.
+This will start the MongoDB server in the background or setup your mongo Atlas.
 
 ## 🔧 Environment Setup
 
-Go to the backend folder and create the .env file, required for server to work correctly. Example:
+Go to the backend folder and create the .env file, required example fields:
 ```
 PORT=3000
 JWT_SECRET="Anything_random_for_JWT_creation"
 MONGO_URI=mongodb://localhost:27017/userDB
 VITE_BACKEND_URL=http://localhost:3000/api
+EMAIL_USER=user@gmail.com (used for sending otp)
+EMAIL_PASS=12345678 (for otp email)
 ```
 Now, Go to the frontend folder and create the .env file, required for services to work correctly. Example:
 ```
 VITE_BACKEND_URL=http://localhost:3000/api
 ```
-Update MONGO_URI and JWT_SECRET :
 
 ## ▶️ Running the Project
 
@@ -145,7 +139,7 @@ http://localhost:5173
 ```
   curl -X POST -H 'Content-Type: application/json' -d '{"name":"Admin","email":"admin@lms.com","password":"12345678","role":"admin"}' http://localhost:3000/api/users
 ```
-This path is intentionally open for creation of Admin. After creating Admin, **protect**  in **/backend/routes/userRoutes.js** like this **router.post("/", protect, userController.createUser);** . Now there is no way to create admin account except using admin token or dashboard.
+This path is intentionally open for creation of Admin. After creating Admin, change a line  in **/backend/routes/userRoutes.js** to this **router.post("/", protect["admin"], userController.createUser);** . Now there is no way to create admin account except using admin token or dashboard.
 
 #### 📡 API Server
 
@@ -176,6 +170,7 @@ LMS
 │   ├── controllers
 │   ├── models
 │   ├── routes
+|   ├── utils
 │   ├── middleware
 │   └── .env
 │
@@ -184,6 +179,7 @@ LMS
 │   ├── pages
 │   ├── context
 │   ├── services
+|   ├── utils
 │   └── routes
 │
 └── package.json
@@ -195,7 +191,6 @@ Course search and filters
 Video streaming optimization
 Payment integration
 Google Login
-OTP-verification
 Open Discuession
 Course Discussion
 Assignments
