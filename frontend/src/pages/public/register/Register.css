@@ -2,6 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  color: var(--full-dark);
   min-height: 100vh;
   background: radial-gradient(1000px circle at 80% 15%, rgba(216, 203, 181, 0.25), transparent 55%),
     linear-gradient(135deg, var(--full-dark), #2b2d26);

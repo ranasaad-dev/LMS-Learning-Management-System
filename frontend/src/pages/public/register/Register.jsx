@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "/src/context/AuthContext";
 import notify from "../../../components/ui/notify/Notify";
 import { FaEye, FaEyeSlash } from "react-icons/fa"
 import Label from "/src/components/ui/label/Label";
+import authService from "../../../services/authService";
 import './Register.css';
+import Loading from "/src/components/ui/Loading";
 
 function Register() {
-  const { register } = useAuth();
+ 
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
@@ -16,29 +17,31 @@ function Register() {
   const [confimPassword, setConfirmPassword] = useState("");
   const [isHidden, setIsHidden] = useState(true);
   const [isCPHidden, setIsCPHidden] = useState(true);
+  const [isRegistring, setIsRegistring] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsRegistring(true);
     if (password === confimPassword) {
 
       try {
-        await register(name, email, password);
-        navigate("/login");
-        notify("Successfuly registred", "success");
-      } catch {
-
-        notify("Registration failed", "error");
+        const response = await authService.register(name, email, password);
+        navigate(`/otp-verification/${response.tkn}`);
+        notify("Successfuly registred. Verification required.", "success");
+      } catch(err) {
+        notify(err.message, "error");
       }
-
+      setIsRegistring(false);
     } else {
 
-      notify("password didn;t matched.", "warning");
+      notify("password didn't matched.", "warning");
     }
 
   };
 
   return (
-    <div className="register-container">
+    isRegistring? <><Loading /> <span>slow network detected...</span> </>:
+      <div className="register-container">
       <div className="register-card">
 
         <h3 className="register-title">Register</h3>
@@ -77,7 +80,7 @@ function Register() {
 
       </div>
 
-    </div>
+    </div> 
   );
 }
 

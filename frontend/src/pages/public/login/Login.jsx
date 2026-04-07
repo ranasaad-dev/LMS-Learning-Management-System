@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "/src/context/AuthContext";
-import Loading from "/src/components/ui/Loading"
+import Loading from "/src/components/ui/Loading";
 import notify from "../../../components/ui/notify/Notify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Label from "/src/components/ui/label/Label";

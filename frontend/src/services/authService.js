@@ -1,15 +1,18 @@
 import apiClient from "../utils/apiClient";
 
 const register = async (name, email, password) => {
-
   const response = await apiClient.post("/auth/register", {
     name,
     email,
     password
   });
-
   return response.data;
 };
+
+const verifyOTP = async(data) => {
+  const response = await apiClient.post(`/auth/verifyotp`, data);
+  return response.data;
+}
 
 const login = async (email, password) => {
   const response = await apiClient.post("/auth/login", {
@@ -38,5 +41,6 @@ export default {
   register,
   login,
   getProfile,
-  updateProfile
+  updateProfile,
+  verifyOTP
 };

@@ -12,20 +12,27 @@ const userSchema = new mongoose.Schema(
     type: String,
     required: [true, "Email is required"],
     unique: true,
-    match: [/.+@.+\..+/, "Please enter a valid email"]
+    match: [/^\S+@\S+\.\S+$/, "Please enter a valid email"]
   },
 
   password: {
     type: String,
     required: true,
-    minlength: 8
-  },
+    minlength: 8,
+     },
 
   role: {
     type: String,
     enum: ["student", "instructor", "admin"],
     default: "student"
-  }
+  },
+  isVerified: {
+    type:Boolean,
+    required: true,
+    default: false
+  },
+  otp: { type: String },
+ 
 
 },
 {
@@ -54,3 +61,5 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
+
+//  match: [/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]*$/,"Password must contain atleast one uppercase, one lowercase and one number"]

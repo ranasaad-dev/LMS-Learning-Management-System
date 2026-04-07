@@ -32,13 +32,13 @@ function App() {
 
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<Otp />} />
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/courses" element={<CourseList />} />
           <Route path="/courses/:id" element={<CourseDetail />} />
           <Route path="/about" element={<About />} />
-
+          <Route path="/otp-verification/:tkn" element={<Otp />} />
           {/* Protected Routes */}
           <Route path="/dashboard/:id" element={<Dashboard />} />
           <Route path="/NoticeBoard" element={<Notification />} />

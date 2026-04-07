@@ -5,7 +5,7 @@ const authController = require("../controllers/authController");
 const { protect } = require("../middleware/authMiddleware");
 
 router.post("/register", authController.register);
-
+router.post("/verifyotp", authController.verifyOTP);
 router.post("/login", authController.login);
 
 router.get("/profile", protect(["instructor", "admin","student"])  , authController.getProfile);

@@ -22,7 +22,7 @@ return (req, res, next) => {
 
   const allowedRoles = Array.isArray(role) ? role : [role];
   if (!allowedRoles.includes(req.user.role)) {
-    return res.status(403).json({ message: "Role invalid" });
+    return res.status(403).json({ message: "You sneaky rat!!!!" });
   }
 
   return next();
