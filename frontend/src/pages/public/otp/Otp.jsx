@@ -22,8 +22,10 @@ const Otp = ({ length = 6, onOtpSubmit }) => {
                 notify("OTP required","warning");
               }
             const response = await authService.verifyOTP(data);
-            console.log(response);
-            notify(response.data, "success");
+            if(!response){
+                
+            }
+            notify(response.message, "success");
             navigate("/login");
             return response;
         }catch (error) {
@@ -42,8 +44,8 @@ const Otp = ({ length = 6, onOtpSubmit }) => {
 
         if (combinedOtp.length === length) {
             console.log(combinedOtp)
+            submitOTP({otp:combinedOtp, token:tkn});
            
-                submitOTP({otp:combinedOtp, token:tkn});
             
         };
         if (value && index < length - 1 && inputRef.current[index + 1]) {

@@ -4,12 +4,13 @@ import HowItWorks from './how_it_works/HowItWorks.jsx';
 import StudentBenefits from './student_benefits/StudentBenefits.jsx';
 import Testimonials from './testimonials/Testimonials.jsx';
 import CallToAction from './call_to_action/CallToAction.jsx';
+import HomeFooter from '../../../components/layout/HomeFooter.jsx';
 import './Home.css';
 
 function Home() {
 
   return (
-    <div id="home">
+    <>    <div id="home">
       <HeroSection />
       <FeaturesSection />
       <HowItWorks />
@@ -17,6 +18,10 @@ function Home() {
       <Testimonials />
       <CallToAction />
     </div>
+    <HomeFooter />
+    
+    </>
+
   );
 }
 

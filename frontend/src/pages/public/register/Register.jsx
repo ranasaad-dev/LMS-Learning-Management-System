@@ -40,7 +40,7 @@ function Register() {
   };
 
   return (
-    isRegistring? <><Loading /> <span>slow network detected...</span> </>:
+    isRegistring? <><Loading message="slow network detected..." /> </>:
       <div className="register-container">
       <div className="register-card">
 

@@ -1,0 +1,39 @@
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    background-color: radial-gradient(circle at 20% 30%, #001a14, #020617 60%);
+    color: #ffffff;
+    padding: 0 2rem 1rem;
+    font-family: sans-serif;
+    padding: 2rem;
+  }
+  
+  .footer-section h4 {
+    margin-bottom: 1.2rem;
+    color: #00d1b2; /* LMS primary color */
+    font-size: 1.1rem;
+  }
+  
+  .footer-section ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footer-section ul li {
+    margin-bottom: 0.8rem;
+  }
+  
+  .footer-section a {
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .footer-section a:hover {
+    color: #fff;
+  }
+ 
+ 

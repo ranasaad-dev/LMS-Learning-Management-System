@@ -83,8 +83,8 @@
   font-family: var(--heading-font, "Space Grotesk", sans-serif);
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--full-dark);
-  background-color: var(--full-light);
+  color: var(--full-light);
+  background-color: var(--full-dark);
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -92,9 +92,12 @@
 }
 
 .register-btn:hover {
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: var(--full-light);
   transform: translateY(-2px);
   color: var(--full-dark);
+}
+.network-message{
+  margin: auto;
 }
 
 @media (max-width: 480px) {
