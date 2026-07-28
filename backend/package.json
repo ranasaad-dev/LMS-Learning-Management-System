@@ -14,7 +14,7 @@
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.2.1",
-    "mongoose": "^9.2.4",
+    "mongoose": "^9.7.2",
     "nodemailer": "^8.0.5",
     "otp-generator": "^4.0.1"
   },
