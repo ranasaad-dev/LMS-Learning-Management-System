@@ -31,42 +31,41 @@ function App() {
 
       <MainLayout>
 
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/courses" element={<CourseList />} />
-          <Route path="/courses/:id" element={<CourseDetail />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/otp-verification/:tkn" element={<Otp />} />
-          <Route path="/faq" element={<Faqs />} />
-          <Route path="/become-instructor" element={<TeachOnLms />} />
-          {/* Protected Routes */}
-          <Route path="/NoticeBoard" element={<Notification />} />
-          <Route path="/*" element={
-            <ProtectedRoute>
-              {/* Student Paths */}
-              <Route path="/dashboard/:id" element={<Dashboard />} />
-              <Route path="/my-courses" element={<MyCourses />} />
-              <Route path="/profile" element={<StudentProfile />} />
-              <Route path="/edit-profile" element={<EditStudentProfile />} />
-              <Route path="/learn/:courseId" element={<Learn />} />
-              {/* Instructor Paths */}
-              <Route path="/create-course" element={<CreateCourse />} />
-              <Route path="/manage-course/:id" element={<CourseManage />} />
-              <Route path="/course/:id/add-lesson" element={<AddLesson />} />
-              <Route path="/course/:id/edit" element={<UpdateCourse />} />
-              <Route path="/course/:courseId/reviews" element={<ReviewList />} />
-              <Route path="/course/:id/students" element={<ViewStudents />} />
-              {/* Admin Paths */}
-              <Route path="/dashboard/:id/users" element={<ManageUsers />} />
-              <Route path="/dashboard/:id/courses" element={<ManageCourses />} /> 
-            </ProtectedRoute>
-          } />
+       <Routes>
+  {/* Public */}
+  <Route path="/" element={<Home />} />
+  <Route path="/login" element={<Login />} />
+  <Route path="/register" element={<Register />} />
+  <Route path="/courses" element={<CourseList />} />
+  <Route path="/courses/:id" element={<CourseDetail />} />
+  <Route path="/about" element={<About />} />
+  <Route path="/otp-verification/:tkn" element={<Otp />} />
+  <Route path="/faq" element={<Faqs />} />
+  <Route path="/become-instructor" element={<TeachOnLms />} />
+  <Route path="/NoticeBoard" element={<Notification />} />
 
-        </Routes>
+  {/* Protected */}
+  <Route element={<ProtectedRoute />}>
+    <Route path="/dashboard/:id" element={<Dashboard />} />
+    <Route path="/my-courses" element={<MyCourses />} />
+    <Route path="/profile" element={<StudentProfile />} />
+    <Route path="/edit-profile" element={<EditStudentProfile />} />
+    <Route path="/learn/:courseId" element={<Learn />} />
 
+    <Route path="/create-course" element={<CreateCourse />} />
+    <Route path="/manage-course/:id" element={<CourseManage />} />
+    <Route path="/course/:id/add-lesson" element={<AddLesson />} />
+    <Route path="/course/:id/edit" element={<UpdateCourse />} />
+    <Route path="/course/:courseId/reviews" element={<ReviewList />} />
+    <Route path="/course/:id/students" element={<ViewStudents />} />
+
+    <Route path="/dashboard/:id/users" element={<ManageUsers />} />
+    <Route path="/dashboard/:id/courses" element={<ManageCourses />} />
+  </Route>
+
+  {/* 404 */}
+  <Route path="*" element={<NotFound />} />
+</Routes>
       </MainLayout>
 
     </Router>
