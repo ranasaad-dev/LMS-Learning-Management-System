@@ -8,7 +8,7 @@ router.get("/", protect(["admin"]), userController.getUsers);
 
 router.get("/:id", protect(["admin"]), userController.getUserById);
 
-router.post("/", protect(["admin"]), userController.createUser);
+router.post("/", userController.createUser);
 
 router.put("/:id", protect(["admin"]), userController.updateUser);
 
