@@ -25,6 +25,7 @@ import ViewStudents from "./pages/roles/instructor/view-students/ViewStudents";
 import Otp from "./pages/public/otp/Otp";
 import Faqs from "./pages/public/Faqs";
 import TeachOnLms from "./pages/public/teach_on_lms/TeachOnLms";
+import NotFound from "./pages/public/NotFind";
 function App() {
   return (
     <Router>
