@@ -1,0 +1,10 @@
+.not-found {
+    display: flex;
+    justify-content: center; /* Horizontal centering */
+    align-items: center;     /* Vertical centering */
+    height: 80vh;      
+}
+.not-found-heading {
+    /* margin: auto 0; */
+    /* display: flex; */
+}
